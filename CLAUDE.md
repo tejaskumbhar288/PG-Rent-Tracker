@@ -115,18 +115,25 @@ pg-rent-app/
 │   └── tests/
 │       ├── conftest.py         # test DB, client, authenticated-owner fixtures
 │       └── test_<feature>.py
-└── mobile/
+└── mobile/                     # Expo SDK 58, React 19.3, RN 0.88, TypeScript strict
     ├── app.json
-    ├── app/                    # Expo Router screens
-    │   ├── (auth)/             # login, signup
-    │   └── (tabs)/             # dashboard, tenants, rooms, settings
+    ├── .env.example            # EXPO_PUBLIC_API_URL (LAN IP on a real phone)
+    ├── jest.config.js          # jest-expo preset
     ├── src/
-    │   ├── api/                # API client + TanStack Query hooks
-    │   ├── components/
-    │   ├── lib/                # helpers: money formatting, phone normalisation, wa.me link builder
+    │   ├── app/                # Expo Router screens (NOTE: under src/, not mobile/app/)
+    │   │   ├── _layout.tsx     # root: ThemeProvider + QueryClientProvider + tabs
+    │   │   ├── index.tsx       # Dashboard tab
+    │   │   ├── tenants.tsx · rooms.tsx · settings.tsx
+    │   │   └── (auth)/         # login, signup (added in F1)
+    │   ├── api/                # API client (reads EXPO_PUBLIC_API_URL) + TanStack Query hooks
+    │   ├── components/         # ThemedText/ThemedView, app-tabs, status-pill, placeholders
+    │   ├── constants/          # theme: Colors, Spacing, status tokens
+    │   ├── hooks/              # use-theme, use-color-scheme
+    │   ├── lib/                # helpers: config, health mapping, money/phone/wa.me (later)
     │   └── types/
     └── __tests__/
 ```
+Routing lives in **`mobile/src/app/`** (the installed scaffold's layout; `@/*` → `./src/*`), not `mobile/app/`.
 
 ## 7. Data model
 

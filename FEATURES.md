@@ -33,7 +33,8 @@ Spec: specs/F0.1-backend-skeleton.md
 
 **Tests:** health endpoint returns 200 and expected body.
 
-### [ ] F0.2 Mobile skeleton
+### [~] F0.2 Mobile skeleton
+Spec: specs/F0.2-mobile-skeleton.md
 **Goal:** An Expo app that runs on the owner's phone and talks to the backend.
 **Mobile:**
 - Expo + TypeScript + Expo Router. Tabs: Dashboard, Tenants, Rooms, Settings (placeholders).
@@ -260,4 +261,5 @@ Record anything deferred, changed or learned while building each feature here.
 
 | Feature | Date | Notes |
 |---|---|---|
+| F0.2 | 2026-10-20 | Code complete; automated checks pass (`npx tsc --noEmit` clean, `npm test` 6/6 green, Metro dev server boots). Decisions: kept Expo scaffold's **`src/app/`** routing (CLAUDE.md §6 updated); **three-way health state** with a distinct "Server up, database down" on 503 (new AC-3b; client `ApiError` carries status); `expo-secure-store` deferred to F1; tab icons via `NativeTabs.Trigger.Icon` `sf`+`md`. Env repairs needed: removed a junk `node_modules/2g` dir (`2g` itself is a *legit* `@expo/cli` dep — verified on npm) and reinstalled a **corrupted `hermes-parser`** (missing `dist/generated/`) that was blocking both Metro and Jest. Added deps: `@tanstack/react-query`; devDeps `jest`, `jest-expo`, `@testing-library/react-native` (its `render` is **async** under React 19 — tests must `await`; needs the `test-renderer` peer), `@types/jest`. Jest config maps `@/*` and stubs `*.css`. `tsconfig` pins `types:["jest"]`. **Still `[~]`: manual on-phone check (Expo Go over LAN) not yet done** — AC-1/2/3/3b/5/6 await the developer's device test. |
 | F0.1 | 2026-10-20 | Done. **Local PostgreSQL 18, no Docker** (role `pgrent`, DBs `pgrent_dev`/`pgrent_test` — `pg_rent` rejected: Postgres reserves `pg_` prefix). uv-managed venv, Python 3.12. Health endpoint returns 503 on DB-down (beyond spec's 200-only). CLAUDE.md §5/§6/§7/§11 updated to match. 3 pytest tests pass, ruff clean. Benign Starlette `httpx` deprecation warning in TestClient — left as-is. |
