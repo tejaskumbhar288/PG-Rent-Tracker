@@ -25,6 +25,18 @@ class Settings(BaseSettings):
     jwt_expires_minutes: int = 60 * 24 * 30
     tz: str = "Asia/Kolkata"
 
+    # Browser origins allowed to call the API. Only the Expo web dev server by
+    # default. The phone does not need this — React Native's fetch does not
+    # enforce origins — but a browser blocks every response without it.
+    cors_origins: str = (
+        "http://localhost:8081,http://127.0.0.1:8081,http://localhost:19006,http://127.0.0.1:19006"
+    )
+
+    @property
+    def cors_origin_list(self) -> list[str]:
+        """``cors_origins`` split into a list, ignoring blanks."""
+        return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
+
 
 @lru_cache
 def get_settings() -> Settings:
