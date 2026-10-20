@@ -11,6 +11,9 @@ dependencies = [
     "pydantic>=2.7",
     "pydantic-settings>=2.3",
     "psycopg[binary]>=3.2",
+    "argon2-cffi>=23.1",
+    "pyjwt>=2.9",
+    "email-validator>=2.1",
 ]
 
 [dependency-groups]

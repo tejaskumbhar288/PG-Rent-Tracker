@@ -19,6 +19,10 @@ class Settings(BaseSettings):
     database_url: str
     test_database_url: str = ""
     jwt_secret: str = "change-me"
+    jwt_algorithm: str = "HS256"
+    # 30 days: the owner should not meet the login screen again after signing up
+    # once (FEATURES.md F1 manual check). No refresh token in the MVP.
+    jwt_expires_minutes: int = 60 * 24 * 30
     tz: str = "Asia/Kolkata"
 
 
