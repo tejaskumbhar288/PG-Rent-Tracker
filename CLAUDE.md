@@ -121,10 +121,11 @@ pg-rent-app/
     ├── jest.config.js          # jest-expo preset
     ├── src/
     │   ├── app/                # Expo Router screens (NOTE: under src/, not mobile/app/)
-    │   │   ├── _layout.tsx     # root: ThemeProvider + QueryClientProvider + tabs
-    │   │   ├── index.tsx       # Dashboard tab
-    │   │   ├── tenants.tsx · rooms.tsx · settings.tsx
-    │   │   └── (auth)/         # login, signup (added in F1)
+    │   │   ├── _layout.tsx     # root: QueryClientProvider + AuthProvider + Stack with Stack.Protected
+    │   │   ├── (auth)/         # _layout.tsx, login.tsx, signup.tsx — shown when there is no token
+    │   │   └── (tabs)/         # _layout.tsx renders AppTabs; the signed-in area
+    │   │       ├── index.tsx   # Dashboard tab
+    │   │       └── tenants.tsx · rooms.tsx · settings.tsx
     │   ├── api/                # API client (reads EXPO_PUBLIC_API_URL) + TanStack Query hooks
     │   ├── components/         # ThemedText/ThemedView, app-tabs, status-pill, placeholders
     │   ├── constants/          # theme: Colors, Spacing, status tokens
@@ -134,6 +135,15 @@ pg-rent-app/
     └── __tests__/
 ```
 Routing lives in **`mobile/src/app/`** (the installed scaffold's layout; `@/*` → `./src/*`), not `mobile/app/`.
+
+The four tabs sit in a **`(tabs)/` group** rather than at the root, because `NativeTabs` resolves each
+trigger's `name` against its own layout's siblings and redirects away from any focused route no visible
+trigger declares — an `(auth)` route alongside the tabs would be bounced back to the first tab. The root
+`_layout.tsx` is therefore a `Stack` with two `Stack.Protected` groups: `(tabs)` guarded by having a token,
+`(auth)` guarded by not having one. Group names are navigator structure, not URL segments, so the public
+paths stay `/`, `/tenants`, `/rooms`, `/settings`. Adding or moving a route changes the generated
+`Href` union in `.expo/types/router.d.ts` (typed routes are on), which only regenerates when Metro boots —
+run `npx expo start` once before `npx tsc --noEmit` or a new path will not typecheck.
 
 ## 7. Data model
 

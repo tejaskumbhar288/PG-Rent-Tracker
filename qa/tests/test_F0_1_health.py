@@ -99,11 +99,22 @@ def test_openapi_health_response_schema(client):
 
 
 def test_only_health_endpoint_exposed(client):
-    """Spec §3 Out of scope: the skeleton ships zero domain endpoints."""
+    """Spec §3 Out of scope: the skeleton itself ships zero domain endpoints.
+
+    Superseded by later features: F1 legitimately adds the three /auth routes.
+    The assertion is therefore "nothing beyond the endpoints specs delivered so
+    far", so the check still catches accidentally-exposed routes.
+    """
     spec = client.get(f"{BASE_URL}/openapi.json").json()
     paths = set(spec["paths"].keys())
-    # Allow only the health route (ignore docs/openapi which are not in paths).
-    assert paths == {"/api/v1/health"}, f"unexpected endpoints: {paths}"
+    allowed = {
+        "/api/v1/health",  # F0.1
+        "/api/v1/auth/signup",  # F1
+        "/api/v1/auth/login",  # F1
+        "/api/v1/auth/me",  # F1
+    }
+    assert paths <= allowed, f"unexpected endpoints: {paths - allowed}"
+    assert "/api/v1/health" in paths
 
 
 # ---------------------------------------------------------------------------

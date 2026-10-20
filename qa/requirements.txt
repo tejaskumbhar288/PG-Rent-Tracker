@@ -1,2 +1,7 @@
 pytest
 httpx
+# F1: forging tokens (expired / wrong-secret / unknown-owner) against the
+# JWT_SECRET from backend/.env, and read-only DB checks for the rows the
+# F1 API does not expose yet (pgs, password_hash).
+pyjwt
+psycopg[binary]

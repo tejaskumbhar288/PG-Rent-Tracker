@@ -3,12 +3,12 @@ from logging.config import fileConfig
 from sqlalchemy import engine_from_config, pool
 
 from alembic import context
+
+# ``app.models`` is imported for its side effect: every model registers itself
+# on Base.metadata, which is what --autogenerate diffs against the database.
+from app import models  # noqa: F401
 from app.core.config import get_settings
 from app.db.base import Base
-
-# As models are added, import them here so Base.metadata (and therefore
-# --autogenerate) sees them, e.g.:
-#   from app.models import owner  # noqa: F401
 
 config = context.config
 
