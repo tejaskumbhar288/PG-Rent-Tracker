@@ -1,4 +1,4 @@
-import { Alert, Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useHealth } from '@/api/use-health';
@@ -10,6 +10,7 @@ import { ThemedView } from '@/components/themed-view';
 import { BottomTabInset, Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 import { describeApiError } from '@/lib/api-errors';
+import { confirmAction } from '@/lib/confirm';
 import { API_URL } from '@/lib/config';
 import { interpretHealth } from '@/lib/health';
 
@@ -21,10 +22,12 @@ export default function SettingsScreen() {
   const { signOut } = useAuth();
 
   const confirmLogout = () => {
-    Alert.alert('Log out?', 'You will need your password to log back in.', [
-      { text: 'Cancel', style: 'cancel' },
-      { text: 'Log out', style: 'destructive', onPress: () => void signOut() },
-    ]);
+    confirmAction({
+      title: 'Log out?',
+      message: 'You will need your password to log back in.',
+      confirmLabel: 'Log out',
+      onConfirm: () => void signOut(),
+    });
   };
 
   return (

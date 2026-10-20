@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { normalizePhone } from '@/lib/phone';
+import { phoneProblem } from '@/lib/phone';
 
 /** Messages are what the owner reads, so they are phrased for a person. */
 export const loginSchema = z.object({
@@ -12,9 +12,12 @@ export const loginSchema = z.object({
 
 export const signupSchema = z.object({
   name: z.string().trim().min(1, 'Enter your name').max(120, 'That name is too long'),
-  phone: z
-    .string()
-    .refine((value) => normalizePhone(value) !== null, 'Enter a 10-digit mobile number'),
+  phone: z.string().superRefine((value, ctx) => {
+    const problem = phoneProblem(value);
+    if (problem !== null) {
+      ctx.addIssue({ code: z.ZodIssueCode.custom, message: problem });
+    }
+  }),
   email: z.union([z.literal(''), z.string().email('Enter a valid email address')]),
   password: z.string().min(8, 'Use at least 8 characters').max(128, 'That password is too long'),
 });
