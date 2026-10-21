@@ -91,3 +91,19 @@ export async function apiPost<T>(
     opts?.timeoutMs,
   );
 }
+
+export async function apiPatch<T>(
+  path: string,
+  body: unknown,
+  opts?: { timeoutMs?: number },
+): Promise<T> {
+  return request<T>(
+    path,
+    {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    },
+    opts?.timeoutMs,
+  );
+}

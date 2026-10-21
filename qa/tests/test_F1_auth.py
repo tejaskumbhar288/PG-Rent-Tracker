@@ -773,12 +773,17 @@ def test_contract_me_requires_bearer_security(openapi):
 
 
 def test_contract_no_out_of_scope_endpoints(openapi):
-    """Spec F1 §3: F1 ships no /pg route (that is F2) and no other resources."""
+    """Spec F1 §3: F1 ships no resources of its own beyond /auth.
+
+    Updated for F2, which legitimately adds GET/PATCH /api/v1/pg. The check is
+    now "nothing beyond what the specs delivered so far promise".
+    """
     assert set(openapi["paths"]) == {
         "/api/v1/health",
         "/api/v1/auth/signup",
         "/api/v1/auth/login",
         "/api/v1/auth/me",
+        "/api/v1/pg",  # F2
     }, set(openapi["paths"])
 
 

@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useHealth } from '@/api/use-health';
 import { useMe } from '@/api/use-auth';
 import { useAuth } from '@/components/auth-provider';
+import { PgDetailsCard } from '@/components/pg-details-card';
 import { StatusPill } from '@/components/status-pill';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -78,6 +79,8 @@ export default function SettingsScreen() {
             </ThemedText>
           </Pressable>
         </ThemedView>
+
+        <PgDetailsCard />
 
         <ThemedView type="backgroundElement" style={styles.card}>
           <ThemedText type="smallBold" themeColor="textSecondary">

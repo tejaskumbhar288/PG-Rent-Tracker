@@ -22,6 +22,7 @@ API = "/api/v1"
 SIGNUP_PATH = f"{API}/auth/signup"
 LOGIN_PATH = f"{API}/auth/login"
 ME_PATH = f"{API}/auth/me"
+PG_PATH = f"{API}/pg"
 
 
 @pytest.fixture(scope="session", autouse=True)

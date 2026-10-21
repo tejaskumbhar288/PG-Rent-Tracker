@@ -112,6 +112,7 @@ def test_only_health_endpoint_exposed(client):
         "/api/v1/auth/signup",  # F1
         "/api/v1/auth/login",  # F1
         "/api/v1/auth/me",  # F1
+        "/api/v1/pg",  # F2
     }
     assert paths <= allowed, f"unexpected endpoints: {paths - allowed}"
     assert "/api/v1/health" in paths
