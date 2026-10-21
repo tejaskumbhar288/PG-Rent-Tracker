@@ -1,5 +1,13 @@
 import { useState } from 'react';
-import { Pressable, StyleSheet, TextInput, type TextInputProps, View } from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  type StyleProp,
+  TextInput,
+  type TextInputProps,
+  type TextStyle,
+  View,
+} from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { Spacing } from '@/constants/theme';
@@ -9,10 +17,12 @@ type Props = Omit<TextInputProps, 'style'> & {
   label: string;
   /** Validation or server message shown under the input. */
   error?: string;
+  /** Extra styles for the input itself, e.g. a taller box for a multiline field. */
+  inputStyle?: StyleProp<TextStyle>;
 };
 
 /** Labelled text input with an inline error, sized for a thumb on a phone. */
-export function FormField({ label, error, secureTextEntry, ...inputProps }: Props) {
+export function FormField({ label, error, secureTextEntry, inputStyle, ...inputProps }: Props) {
   const theme = useTheme();
   const [revealed, setRevealed] = useState(false);
   const isPassword = secureTextEntry === true;
@@ -47,6 +57,7 @@ export function FormField({ label, error, secureTextEntry, ...inputProps }: Prop
             color: theme.text,
             borderColor: error === undefined ? 'transparent' : theme.statusError,
           },
+          inputStyle,
         ]}
         {...inputProps}
       />

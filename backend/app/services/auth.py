@@ -13,10 +13,8 @@ from sqlalchemy.orm import Session
 from app.core.security import DUMMY_HASH, hash_password, verify_password
 from app.models.owner import Owner
 from app.models.pg import Pg
+from app.services.pg import DEFAULT_PG_NAME, DEFAULT_RENT_DUE_DAY
 from app.services.phone import normalize_phone
-
-DEFAULT_PG_NAME = "My PG"
-DEFAULT_RENT_DUE_DAY = 5
 
 
 class DuplicatePhoneError(Exception):
